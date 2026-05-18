@@ -36,21 +36,21 @@ const SERVICES = [
     lede: "Réfection complète et réparation — du diagnostic à la finition, sur tous types de couvertures du Gard.",
     items: ["Tuiles canal, romanes, mécaniques", "Ardoise naturelle & fibrociment", "Bac acier & toiture zinc", "Faîtage, solin, noue"],
     featured: true,
-    image: "input/expertise-toit-charpente-pro-g-renovations.png",
+    image: "input/expertise-toit-charpente-pro-g-renovations.png", imgW: 877, imgH: 474,
   },
   {
     num: "02",
     name: "Charpente",
     lede: "Structure solide et durable — pose, réparation, rénovation et traitement.",
     items: ["Charpente traditionnelle", "Charpente industrielle", "Réparation & renforcement", "Traitement du bois"],
-    image: "input/toit-fenetre.jpg",
+    image: "input/toit-fenetre.jpg", imgW: 739, imgH: 821,
   },
   {
     num: "03",
     name: "Gouttière",
     lede: "Évacuation des eaux de pluie — pose et remplacement, large choix de matériaux.",
     items: ["Aluminium prélaqué", "Zinc naturel & cuivre", "Chéneaux & descentes", "Choix de couleurs"],
-    image: "input/Pose-de-gouttiere-en-aluminium-Gard.webp",
+    image: "input/Pose-de-gouttiere-en-aluminium-Gard.webp", imgW: 448, imgH: 320,
   },
   {
     num: "04",
@@ -58,7 +58,7 @@ const SERVICES = [
     lede: "Habillages, couvertines, solins — et intervention rapide en cas de sinistre.",
     items: ["Réparation fuite & infiltration", "Dégât tempête", "Nettoyage & hydrofuge", "Diagnostic gratuit 24/7"],
     urgent: true,
-    image: "input/societe-couverture-gard-nimes.jpg",
+    image: "input/societe-couverture-gard-nimes.jpg", imgW: 960, imgH: 960,
   },
 ];
 
@@ -69,11 +69,11 @@ const FOURNISSEURS = [
 ];
 
 const REALISATIONS = [
-  { label: "Réfection complète", title: "Toiture tuiles canal neuves", lieu: "Nîmes · 2025", cls: "real-a", image: "input/expertise-toit-charpente-pro-g-renovations.png" },
-  { label: "Charpente & Liteaux", title: "Pose structure traditionnelle", lieu: "Gard · 2025", cls: "real-b", image: "input/toit-fenetre.jpg" },
-  { label: "Avant / Après", title: "Réhabilitation toiture ancienne", lieu: "Nîmes · 2024", cls: "real-c", image: "input/pro-g-renovation.jpg" },
-  { label: "Nettoyage", title: "Démoussage & hydrofuge", lieu: "Marguerittes · 2025", cls: "real-d", image: "input/societe-couverture-gard-nimes.jpg" },
-  { label: "Zinguerie", title: "Gouttières zinc sur mesure", lieu: "Nîmes · 2025", cls: "real-e", image: "input/Pose-de-gouttiere-en-aluminium-Gard.webp" },
+  { label: "Réfection complète", title: "Toiture tuiles canal neuves", lieu: "Nîmes · 2025", cls: "real-a", image: "input/expertise-toit-charpente-pro-g-renovations.png", imgW: 877, imgH: 474 },
+  { label: "Charpente & Liteaux", title: "Pose structure traditionnelle", lieu: "Gard · 2025", cls: "real-b", image: "input/toit-fenetre.jpg", imgW: 739, imgH: 821 },
+  { label: "Avant / Après", title: "Réhabilitation toiture ancienne", lieu: "Nîmes · 2024", cls: "real-c", image: "input/pro-g-renovation.jpg", imgW: 1135, imgH: 808 },
+  { label: "Nettoyage", title: "Démoussage & hydrofuge", lieu: "Marguerittes · 2025", cls: "real-d", image: "input/societe-couverture-gard-nimes.jpg", imgW: 960, imgH: 960 },
+  { label: "Zinguerie", title: "Gouttières zinc sur mesure", lieu: "Nîmes · 2025", cls: "real-e", image: "input/Pose-de-gouttiere-en-aluminium-Gard.webp", imgW: 448, imgH: 320 },
 ];
 
 const AVIS = [
@@ -253,7 +253,7 @@ function Nav() {
       <nav className="nav">
         <div className="container nav-inner">
           <a href="#" className="brand" onClick={close}>
-            <img src="input/logo.png" alt="Pro G Rénovations" className="brand-logo" />
+            <img src="input/logo.png" alt="Pro G Rénovations" className="brand-logo" width={260} height={87} />
           </a>
           <div className="nav-links">
             {NAV_LINKS.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
@@ -278,7 +278,7 @@ function Nav() {
       <div className={`mobile-menu${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
         <div className="mobile-menu-header">
           <a href="#" className="brand" onClick={close}>
-            <img src="input/logo.png" alt="Pro G Rénovations" className="brand-logo" style={{height: 36}} />
+            <img src="input/logo.png" alt="Pro G Rénovations" className="brand-logo" width={260} height={87} style={{height: 36}} />
           </a>
           <button className="mobile-menu-close" onClick={close} aria-label="Fermer">✕</button>
         </div>
@@ -338,6 +338,8 @@ function Hero() {
             alt="Rénovation de toiture — Pro G Rénovations, couvreur charpentier dans le Gard"
             loading="eager"
             fetchPriority="high"
+            width={1135}
+            height={808}
           />
           <div className="hero-corner-tag"><span className="live"></span> CHANTIER EN COURS · NÎMES 30900</div>
           <div className="hero-floating-stats">
@@ -404,7 +406,7 @@ function ServicesSection() {
             <article key={s.num} className={`service-card ${s.featured ? "featured" : ""}`}>
               {s.urgent && <span className="badge-urg">● URGENCE 24/7</span>}
               <div className="picto">
-                <img src={s.image} alt={`${s.name} — chantier Pro G Rénovations`} loading="lazy" />
+                <img src={s.image} alt={`${s.name} — chantier Pro G Rénovations`} loading="lazy" width={s.imgW} height={s.imgH} />
               </div>
               <span className="num">{s.num} / 04</span>
               <h3>{s.name}</h3>
@@ -550,7 +552,7 @@ function ZoomParallax({ items }) {
       <div className="zp-mobile-grid container">
         {items.slice(0, 4).map((r, i) => (
           <div key={r.title} className={`zp-mobile-item${i === 0 ? " zp-mobile-featured" : ""}`}>
-            <img src={r.image} alt={r.title} loading="lazy" />
+            <img src={r.image} alt={r.title} loading="lazy" width={r.imgW} height={r.imgH} />
             <div className="zp-label">▸ {r.label}</div>
           </div>
         ))}
@@ -578,7 +580,7 @@ function ZoomParallax({ items }) {
                 transformOrigin: "center center",
               }}
             >
-              <img src={r.image} alt={r.title} loading="lazy" />
+              <img src={r.image} alt={r.title} loading="lazy" width={r.imgW} height={r.imgH} />
               <div className="zp-label">▸ {r.label}</div>
             </div>
           );
@@ -898,7 +900,7 @@ function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <img src="input/logo.png" alt="Pro G Rénovations" className="footer-logo" />
+            <img src="input/logo.png" alt="Pro G Rénovations" className="footer-logo" width={260} height={87} />
             <p>Artisan Couvreur Charpentier à Nîmes depuis plus de 25 ans. Toiture, charpente, gouttières, zinguerie & urgences — dans tout le Gard.</p>
           </div>
           <div>
