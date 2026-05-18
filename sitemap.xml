@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://pro-g.netlify.app/</loc>
+    <lastmod>2026-05-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://pro-g.netlify.app/input/pro-g-renovation.jpg</image:loc>
+      <image:title>Rénovation de toiture — Pro G Rénovations, couvreur charpentier à Nîmes</image:title>
+      <image:caption>Artisans couvreur charpentier à Nîmes &amp; Gard — Pro G Rénovations depuis 1999</image:caption>
+    </image:image>
+  </url>
+</urlset>
