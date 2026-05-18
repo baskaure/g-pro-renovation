@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(cd /tmp)",
+      "Bash(mkdir -p design_extracted)",
+      "Bash(tar -xf \"C:/Users/maitr/AppData/Local/Temp/design_extracted/design.tar\" -C design_extracted)",
+      "Bash(start *)",
+      "Bash(npx serve *)"
+    ]
+  }
+}
