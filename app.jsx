@@ -1,7 +1,32 @@
 /* global React, ReactDOM */
 const { useState, useEffect, useRef } = React;
 
+function useIsMobile(breakpoint = 768) {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= breakpoint);
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint}px)`);
+    const update = () => setIsMobile(mq.matches);
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [breakpoint]);
+  return isMobile;
+}
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(mq.matches);
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return reduced;
+}
+
 const HERO_IMAGE = "input/pro-g-renovation.jpg";
+
+/* — Webhook Make — colle ton URL ici après avoir créé le scénario — */
+const WEBHOOK_URL = "https://hook.eu2.make.com/v6drhu8oh32b3phl0tp6ecohmod1gf1h";
 
 /* — Data — */
 const SERVICES = [
@@ -128,20 +153,20 @@ function ContainerScroll({ titleComponent, children }) {
   const cardRef      = useRef(null);
   const titleRef     = useRef(null);
   const rafRef       = useRef(null);
-  const isMobileRef  = useRef(false);
-
-  useEffect(() => {
-    const checkMobile = () => { isMobileRef.current = window.innerWidth <= 768; };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const reducedMotion = usePrefersReducedMotion();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const container = containerRef.current;
     const card      = cardRef.current;
     const title     = titleRef.current;
     if (!container || !card || !title) return;
+
+    if (reducedMotion || isMobile) {
+      card.style.transform  = "scale(1)";
+      title.style.transform = "";
+      return;
+    }
 
     const onScroll = () => {
       cancelAnimationFrame(rafRef.current);
@@ -150,12 +175,7 @@ function ContainerScroll({ titleComponent, children }) {
         const elH   = container.offsetHeight;
         const viewH = window.innerHeight;
         const p     = Math.max(0, Math.min(1, -rect.top / Math.max(1, elH - viewH)));
-
-        const mobile   = isMobileRef.current;
-        const scaleMax = mobile ? 0.7  : 1.05;
-        const scaleMin = mobile ? 0.9  : 1.0;
-        const s        = scaleMax - (scaleMax - scaleMin) * p;
-
+        const s     = 1.05 - 0.05 * p;
         card.style.transform  = `rotateX(${20 * (1 - p)}deg) scale(${s})`;
         title.style.transform = `translateY(${-80 * p}px)`;
       });
@@ -167,7 +187,7 @@ function ContainerScroll({ titleComponent, children }) {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [reducedMotion, isMobile]);
 
   return (
     <div ref={containerRef} className="scroll-container">
@@ -179,7 +199,7 @@ function ContainerScroll({ titleComponent, children }) {
           ref={cardRef}
           className="scroll-card"
           style={{
-            transform: "rotateX(20deg) scale(1.05)",
+            transform: isMobile ? "scale(1)" : "rotateX(20deg) scale(1.05)",
             boxShadow: "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
           }}
         >
@@ -213,21 +233,71 @@ function Topbar() {
 }
 
 function Nav() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!menuOpen) { document.body.style.overflow = ""; return; }
+    document.body.style.overflow = "hidden";
+    const onKey = (e) => { if (e.key === "Escape") setMenuOpen(false); };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  const close = () => setMenuOpen(false);
+
   return (
-    <nav className="nav">
-      <div className="container nav-inner">
-        <a href="#" className="brand">
-          <img src="input/logo.png" alt="Pro G Rénovations" className="brand-logo" />
-        </a>
-        <div className="nav-links">
-          {NAV_LINKS.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
+    <>
+      <nav className="nav">
+        <div className="container nav-inner">
+          <a href="#" className="brand" onClick={close}>
+            <img src="input/logo.png" alt="Pro G Rénovations" className="brand-logo" />
+          </a>
+          <div className="nav-links">
+            {NAV_LINKS.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
+          </div>
+          <div className="nav-cta">
+            <a href="tel:0659780775" className="btn btn-ghost btn-sm">06 59 78 07 75</a>
+            <a href="#contact" className="btn btn-primary btn-sm">Devis gratuit <span className="arrow">→</span></a>
+            <button
+              className={`nav-hamburger${menuOpen ? " is-open" : ""}`}
+              onClick={() => setMenuOpen(v => !v)}
+              aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-expanded={menuOpen}
+            >
+              <span className="bar" />
+              <span className="bar" />
+              <span className="bar" />
+            </button>
+          </div>
         </div>
-        <div className="nav-cta">
-          <a href="tel:0659780775" className="btn btn-ghost btn-sm">06 59 78 07 75</a>
-          <a href="#contact" className="btn btn-primary btn-sm">Devis gratuit <span className="arrow">→</span></a>
+      </nav>
+
+      <div className={`mobile-menu${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
+        <div className="mobile-menu-header">
+          <a href="#" className="brand" onClick={close}>
+            <img src="input/logo.png" alt="Pro G Rénovations" className="brand-logo" style={{height: 36}} />
+          </a>
+          <button className="mobile-menu-close" onClick={close} aria-label="Fermer">✕</button>
+        </div>
+        <nav className="mobile-nav">
+          {NAV_LINKS.map(l => <a key={l.href} href={l.href} onClick={close}>{l.label}</a>)}
+        </nav>
+        <div className="mobile-menu-cta">
+          <a href="tel:0659780775" className="btn btn-dark" onClick={close}>
+            <IconPhone /> 06 59 78 07 75
+          </a>
+          <a href="https://wa.me/33659780775" className="btn btn-wa" onClick={close}>
+            WhatsApp <span className="arrow">→</span>
+          </a>
+          <a href="#contact" className="btn btn-primary" onClick={close}>
+            Devis gratuit <span className="arrow">→</span>
+          </a>
         </div>
       </div>
-    </nav>
+    </>
   );
 }
 
@@ -267,6 +337,7 @@ function Hero() {
             src={HERO_IMAGE}
             alt="Rénovation de toiture — Pro G Rénovations, couvreur charpentier dans le Gard"
             loading="eager"
+            fetchPriority="high"
           />
           <div className="hero-corner-tag"><span className="live"></span> CHANTIER EN COURS · NÎMES 30900</div>
           <div className="hero-floating-stats">
@@ -441,11 +512,14 @@ const PHOTO_LAYOUTS = [
 ];
 
 function ZoomParallax({ items }) {
-  const containerRef = useRef(null);
-  const featuredRef  = useRef(null);
-  const rafRef       = useRef(null);
+  const isMobile      = useIsMobile();
+  const reducedMotion = usePrefersReducedMotion();
+  const containerRef  = useRef(null);
+  const featuredRef   = useRef(null);
+  const rafRef        = useRef(null);
 
   useEffect(() => {
+    if (isMobile || reducedMotion) return;
     const container = containerRef.current;
     const featured  = featuredRef.current;
     if (!container || !featured) return;
@@ -457,11 +531,8 @@ function ZoomParallax({ items }) {
         const h    = container.offsetHeight;
         const vh   = window.innerHeight;
         const rawP = Math.max(0, Math.min(1, -rect.top / Math.max(1, h - vh)));
-        // Zoom completes in first 40% of scroll — feels fast
         const p    = Math.min(1, rawP * 2.5);
-        // Ease-out: snappy start, smooth landing
         const e    = 1 - Math.pow(1 - p, 2);
-
         featured.style.transform = `translate(-50%, -50%) scale(${1 + e * 0.7})`;
       });
     };
@@ -472,7 +543,20 @@ function ZoomParallax({ items }) {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [isMobile, reducedMotion]);
+
+  if (isMobile) {
+    return (
+      <div className="zp-mobile-grid container">
+        {items.slice(0, 4).map((r, i) => (
+          <div key={r.title} className={`zp-mobile-item${i === 0 ? " zp-mobile-featured" : ""}`}>
+            <img src={r.image} alt={r.title} loading="lazy" />
+            <div className="zp-label">▸ {r.label}</div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} style={{ height: "180vh" }}>
@@ -644,12 +728,48 @@ function ZoneSection() {
 
 function ContactSection() {
   const [travail, setTravail] = useState(TRAVAUX_TYPES[0]);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const formRef = useRef(null);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 4500);
+    if (status === "loading") return;
+    setStatus("loading");
+
+    const fd = new FormData(formRef.current);
+    const payload = {
+      prenom:    fd.get("prenom"),
+      nom:       fd.get("nom"),
+      telephone: fd.get("telephone"),
+      ville:     fd.get("ville") || "—",
+      email:     fd.get("email") || "—",
+      travaux:   travail,
+      message:   fd.get("message") || "—",
+      soumis_le: new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" }),
+    };
+
+    if (!WEBHOOK_URL) {
+      // URL non configurée — simuler succès pour les tests
+      setStatus("success");
+      formRef.current.reset();
+      setTravail(TRAVAUX_TYPES[0]);
+      return;
+    }
+
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setStatus("success");
+      formRef.current.reset();
+      setTravail(TRAVAUX_TYPES[0]);
+    } catch (err) {
+      console.error("Webhook error:", err);
+      setStatus("error");
+    }
   };
 
   return (
@@ -694,42 +814,47 @@ function ContactSection() {
             </div>
           </div>
 
-          <form className="contact-form" onSubmit={submit}>
+          <form ref={formRef} className="contact-form" onSubmit={submit}>
             <div className="form-head">
               <h3>Être rappelé</h3>
               <p>Sans engagement · Devis gratuit · Données confidentielles <IconLock /></p>
             </div>
 
-            {sent && (
+            {status === "success" && (
               <div className="form-success">
                 <IconCheck /> Merci ! Nous vous rappelons sous 24h.
+              </div>
+            )}
+            {status === "error" && (
+              <div className="form-error">
+                Une erreur est survenue — appelez-nous au <a href="tel:0659780775">06 59 78 07 75</a>.
               </div>
             )}
 
             <div className="form-row">
               <div className="field">
                 <label>Prénom <span className="req">*</span></label>
-                <input type="text" required placeholder="Jean" />
+                <input name="prenom" type="text" required placeholder="Jean" />
               </div>
               <div className="field">
                 <label>Nom <span className="req">*</span></label>
-                <input type="text" required placeholder="Dupont" />
+                <input name="nom" type="text" required placeholder="Dupont" />
               </div>
             </div>
             <div className="form-row">
               <div className="field">
                 <label>Téléphone <span className="req">*</span></label>
-                <input type="tel" required placeholder="06 ..." />
+                <input name="telephone" type="tel" required placeholder="06 ..." />
               </div>
               <div className="field">
                 <label>Ville</label>
-                <input type="text" placeholder="Nîmes" />
+                <input name="ville" type="text" placeholder="Nîmes" />
               </div>
             </div>
             <div className="form-row single">
               <div className="field">
                 <label>Email</label>
-                <input type="email" placeholder="jean.dupont@email.fr" />
+                <input name="email" type="email" placeholder="jean.dupont@email.fr" />
               </div>
             </div>
             <div className="form-row single">
@@ -747,7 +872,7 @@ function ContactSection() {
             <div className="form-row single">
               <div className="field">
                 <label>Message (optionnel)</label>
-                <textarea placeholder="Décrivez votre projet…"></textarea>
+                <textarea name="message" placeholder="Décrivez votre projet…"></textarea>
               </div>
             </div>
 
@@ -756,8 +881,8 @@ function ContactSection() {
                 <span><IconCheck /> DEVIS GRATUIT &nbsp;<IconCheck /> SANS ENGAGEMENT</span>
                 <span><IconLock /> DONNÉES CONFIDENTIELLES</span>
               </div>
-              <button type="submit" className="btn btn-primary">
-                Demander à être rappelé <span className="arrow">→</span>
+              <button type="submit" className="btn btn-primary" disabled={status === "loading"}>
+                {status === "loading" ? "Envoi en cours…" : "Demander à être rappelé"} <span className="arrow">→</span>
               </button>
             </div>
           </form>
