@@ -1,4 +1,4 @@
-/* Pro G Rénovations — Landing
+/* Pro G Rénovation — Landing
    Palette: rouge profond + bleu nuit + crème
    Typo: Instrument Serif (display italic) · Geist (sans) · JetBrains Mono (technique)
 */
@@ -1156,7 +1156,7 @@ a { color: inherit; text-decoration: none; }
 
   /* Scroll card */
   .scroll-container { height: 680px; }
-  .scroll-card { height: 280px; margin-top: -32px; }
+  .scroll-card { height: 280px; margin-top: 8px; }
   .scroll-inner { padding: 16px 0 28px; }
 
   /* Services */

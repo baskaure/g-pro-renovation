@@ -253,7 +253,7 @@ function Nav() {
       <nav className="nav">
         <div className="container nav-inner">
           <a href="#" className="brand" onClick={close}>
-            <img src="input/logo.png" alt="Pro G Rénovations" className="brand-logo" width={260} height={87} />
+            <img src="input/logo.png" alt="Pro G Rénovation" className="brand-logo" width={260} height={87} />
           </a>
           <div className="nav-links">
             {NAV_LINKS.map(l => <a key={l.href} href={l.href}>{l.label}</a>)}
@@ -278,7 +278,7 @@ function Nav() {
       <div className={`mobile-menu${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
         <div className="mobile-menu-header">
           <a href="#" className="brand" onClick={close}>
-            <img src="input/logo.png" alt="Pro G Rénovations" className="brand-logo" width={260} height={87} style={{height: 36}} />
+            <img src="input/logo.png" alt="Pro G Rénovation" className="brand-logo" width={260} height={87} style={{height: 36}} />
           </a>
           <button className="mobile-menu-close" onClick={close} aria-label="Fermer">✕</button>
         </div>
@@ -335,7 +335,7 @@ function Hero() {
         <div className="hero-card-content">
           <img
             src={HERO_IMAGE}
-            alt="Rénovation de toiture — Pro G Rénovations, couvreur charpentier dans le Gard"
+            alt="Rénovation de toiture — Pro G Rénovation, couvreur charpentier dans le Gard"
             loading="eager"
             fetchPriority="high"
             width={1135}
@@ -406,7 +406,7 @@ function ServicesSection() {
             <article key={s.num} className={`service-card ${s.featured ? "featured" : ""}`}>
               {s.urgent && <span className="badge-urg">● URGENCE 24/7</span>}
               <div className="picto">
-                <img src={s.image} alt={`${s.name} — chantier Pro G Rénovations`} loading="lazy" width={s.imgW} height={s.imgH} />
+                <img src={s.image} alt={`${s.name} — chantier Pro G Rénovation`} loading="lazy" width={s.imgW} height={s.imgH} />
               </div>
               <span className="num">{s.num} / 04</span>
               <h3>{s.name}</h3>
@@ -900,7 +900,7 @@ function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <img src="input/logo.png" alt="Pro G Rénovations" className="footer-logo" width={260} height={87} />
+            <img src="input/logo.png" alt="Pro G Rénovation" className="footer-logo" width={260} height={87} />
             <p>Artisan Couvreur Charpentier à Nîmes depuis plus de 25 ans. Toiture, charpente, gouttières, zinguerie & urgences — dans tout le Gard.</p>
           </div>
           <div>

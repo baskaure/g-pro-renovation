@@ -13,4 +13,4 @@ Allow: /
 User-agent: GoogleBot
 Allow: /
 
-Sitemap: https://pro-g.netlify.app/sitemap.xml
+Sitemap: https://pro-g-renovation.fr/sitemap.xml

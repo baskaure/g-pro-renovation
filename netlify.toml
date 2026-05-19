@@ -1,6 +1,6 @@
 [[redirects]]
-  from = "http://pro-g.netlify.app/*"
-  to   = "https://pro-g.netlify.app/:splat"
+  from = "http://pro-g-renovation.fr/*"
+  to   = "https://pro-g-renovation.fr/:splat"
   status = 301
   force  = true
 
