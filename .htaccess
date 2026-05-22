@@ -1,0 +1,56 @@
+# ─────────────────────────────────────────────────────────────
+#  Pro G Rénovation — configuration Apache (hébergement o2switch)
+#  À téléverser à la racine du site, à côté de index.html
+# ─────────────────────────────────────────────────────────────
+
+# 1 ─ URL canonique : forcer HTTPS + supprimer le www
+#     Toute variante (http://, www.) redirige en 301 vers
+#     https://pro-g-renovation.fr/
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www\.pro-g-renovation\.fr$ [NC,OR]
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://pro-g-renovation.fr%{REQUEST_URI} [R=301,L]
+
+# 2 ─ Encodage UTF-8 dans l'en-tête HTTP (et pas seulement la balise meta)
+AddDefaultCharset UTF-8
+
+# 3 ─ Page d'accueil
+DirectoryIndex index.html
+
+# 4 ─ Compression des réponses texte
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+    application/javascript application/json image/svg+xml
+</IfModule>
+
+# 5 ─ Cache navigateur
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css            "access plus 1 year"
+  ExpiresByType image/jpeg          "access plus 1 year"
+  ExpiresByType image/png           "access plus 1 year"
+  ExpiresByType image/webp          "access plus 1 year"
+  ExpiresByType image/svg+xml       "access plus 1 year"
+  ExpiresByType text/html           "access plus 0 seconds"
+  ExpiresByType application/xml     "access plus 1 day"
+</IfModule>
+
+<IfModule mod_headers.c>
+  # app.jsx change souvent : jamais en cache long
+  <FilesMatch "\.jsx$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(css|jpg|jpeg|png|webp|svg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  # En-têtes de sécurité
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# 6 ─ Réduire les infos serveur exposées (selon ce que l'hébergeur autorise)
+ServerSignature Off

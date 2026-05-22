@@ -6,7 +6,15 @@
       "Bash(mkdir -p design_extracted)",
       "Bash(tar -xf \"C:/Users/maitr/AppData/Local/Temp/design_extracted/design.tar\" -C design_extracted)",
       "Bash(start *)",
-      "Bash(npx serve *)"
+      "Bash(npx serve *)",
+      "Bash(curl -sSI https://pro-g-renovation.fr/)",
+      "Bash(curl -sSI https://www.pro-g-renovation.fr/)",
+      "Bash(curl -sSI http://pro-g-renovation.fr/)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code}  \\(%{content_type}\\)\\\\n\" https://pro-g-renovation.fr/robots.txt)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code}  \\(%{content_type}\\)\\\\n\" https://pro-g-renovation.fr/sitemap.xml)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code}  \\(%{content_type}\\)\\\\n\" https://pro-g-renovation.fr/app.jsx)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code}  \\(%{content_type}\\)\\\\n\" https://pro-g-renovation.fr/styles.css)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code}  \\(%{content_type}\\)\\\\n\" https://pro-g-renovation.fr/llms.txt)"
     ]
   }
 }

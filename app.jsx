@@ -798,7 +798,7 @@ function ContactSection() {
             <div className="contact-block">
               <span className="lbl">▸ Email</span>
               <div className="val" style={{fontSize: 22, fontStyle: "normal", fontFamily: "var(--font-sans)", fontWeight: 400}}>
-                <a href="mailto:progrenovationsea@gmail.com">progrenovationsea@gmail.com</a>
+                <a href="mailto:artisanguerdener@gmail.com">artisanguerdener@gmail.com</a>
               </div>
             </div>
             <div className="contact-block">
@@ -927,7 +927,7 @@ function Footer() {
             <h6>Contact</h6>
             <ul>
               <li><a href="tel:0659780775">06 59 78 07 75</a></li>
-              <li><a href="mailto:progrenovationsea@gmail.com">progrenovationsea@gmail.com</a></li>
+              <li><a href="mailto:artisanguerdener@gmail.com">artisanguerdener@gmail.com</a></li>
               <li>65 rue du Moulin Vedel</li>
               <li>30900 Nîmes</li>
               <li>Lun–Sam · 8h–19h</li>
