@@ -834,13 +834,22 @@ function ContactSection() {
   const [travail, setTravail] = useState(TRAVAUX_TYPES[0]);
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
   const formRef = useRef(null);
+  const mountedAt = useRef(Date.now());
 
   const submit = async (e) => {
     e.preventDefault();
     if (status === "loading") return;
-    setStatus("loading");
 
     const fd = new FormData(formRef.current);
+
+    // Honeypot : un bot remplit ce champ, un humain non
+    if (fd.get("website")) return;
+
+    // Soumission trop rapide = bot probable (< 3 s)
+    if (Date.now() - mountedAt.current < 3000) return;
+
+    setStatus("loading");
+
     const payload = {
       prenom:    fd.get("prenom"),
       nom:       fd.get("nom"),
@@ -919,6 +928,10 @@ function ContactSection() {
           </div>
 
           <form ref={formRef} className="contact-form" onSubmit={submit}>
+            {/* Honeypot anti-spam — caché aux humains, visible aux bots */}
+            <div style={{position:"absolute",left:"-9999px",opacity:0,pointerEvents:"none"}} aria-hidden="true">
+              <input name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
             <div className="form-head">
               <h3>Être rappelé</h3>
               <p>Sans engagement · Devis gratuit · Données confidentielles <IconLock /></p>
