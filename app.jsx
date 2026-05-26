@@ -63,9 +63,9 @@ const SERVICES = [
 ];
 
 const FOURNISSEURS = [
-  { mark: "CM", name: "Chausson", desc: "Négoce de matériaux de référence — tuiles, couverture, isolation et accessoires de toiture.", tag: "Matériaux" },
-  { mark: "Lr", name: "Larivière", desc: "Spécialiste couverture, zinguerie et étanchéité — zinc naturel, aluminium, gouttières haut de gamme.", tag: "Zinguerie" },
-  { mark: "PP", name: "Point P", desc: "Réseau national — large gamme de produits pour la couverture, la charpente et le gros œuvre.", tag: "Distribution" },
+  { id: "lariviere", name: "Larivière", desc: "Spécialiste couverture, zinguerie et étanchéité — zinc naturel, aluminium, gouttières haut de gamme.", tag: "Couverture & Zinguerie", url: "https://www.lariviere.fr/" },
+  { id: "pointp", name: "Point.P", desc: "Réseau national — large gamme de produits pour la couverture, la charpente et le gros œuvre.", tag: "Distribution", url: "https://www.pointp.fr/" },
+  { id: "chausson", name: "Chausson Matériaux", desc: "Négoce de référence — tuiles, isolation et accessoires de toiture, expertise méditerranéenne.", tag: "Matériaux", url: "https://www.chausson-materiaux.fr/" },
 ];
 
 const REALISATIONS = [
@@ -136,14 +136,103 @@ const IconPhone = () => (
   </svg>
 );
 
-const Stars = ({ count = 5, size = 14 }) => (
-  <span style={{display:"inline-flex",gap:2,alignItems:"center",color:"inherit"}}>
+/* — Pictogrammes garanties (style trait, gros et lisibles) — */
+const IconMedal = ({ size = 56 }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="32" cy="26" r="14"/>
+    <circle cx="32" cy="26" r="8"/>
+    <path d="M22 36L14 56l10-4 4 8 6-14"/>
+    <path d="M42 36l8 20-10-4-4 8-6-14"/>
+    <path d="M28 22l3 4 5-7"/>
+  </svg>
+);
+
+const IconShieldCheck = ({ size = 56 }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M32 6L10 14v18c0 14 9 22 22 26 13-4 22-12 22-26V14L32 6z"/>
+    <path d="M22 32l7 7 13-15"/>
+  </svg>
+);
+
+const IconClock247 = ({ size = 56 }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="32" cy="32" r="24"/>
+    <path d="M32 18v14l9 6"/>
+    <path d="M32 4v4M32 56v4M4 32h4M56 32h4"/>
+  </svg>
+);
+
+const IconCalendar = ({ size = 56 }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="8" y="12" width="48" height="46" rx="4"/>
+    <path d="M8 24h48"/>
+    <path d="M20 6v12M44 6v12"/>
+    <path d="M20 38l5 5 12-12"/>
+  </svg>
+);
+
+const IconHouseHeart = ({ size = 56 }) => (
+  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M8 28L32 8l24 20v28a4 4 0 0 1-4 4H12a4 4 0 0 1-4-4V28z"/>
+    <path d="M32 50c-6-4-10-7-10-12a4 4 0 0 1 4-4c2 0 4 1 6 4 2-3 4-4 6-4a4 4 0 0 1 4 4c0 5-4 8-10 12z"/>
+  </svg>
+);
+
+const Stars = ({ count = 5, size = 14, color = "currentColor" }) => (
+  <span style={{display:"inline-flex",gap:2,alignItems:"center",color}}>
     {Array.from({length: count}).map((_, i) => (
       <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
       </svg>
     ))}
   </span>
+);
+
+/* — Logos fournisseurs (versions texte stylisées —
+   à remplacer par les vrais fichiers logos officiels si fournis) — */
+const SupplierLogo = ({ id }) => {
+  if (id === "lariviere") {
+    return (
+      <div className="supplier-logo supplier-lariviere">
+        <span className="sl-name">LARIVIÈRE</span>
+        <span className="sl-bar">
+          <i style={{background:"#e74c3c"}} />
+          <i style={{background:"#f1c40f"}} />
+          <i style={{background:"#27ae60"}} />
+          <i style={{background:"#3498db"}} />
+        </span>
+      </div>
+    );
+  }
+  if (id === "pointp") {
+    return (
+      <div className="supplier-logo supplier-pointp">
+        <span className="sl-name">POINT<span className="sl-dot">.</span>P</span>
+        <span className="sl-sub">Matériaux de Construction</span>
+      </div>
+    );
+  }
+  if (id === "chausson") {
+    return (
+      <div className="supplier-logo supplier-chausson">
+        <span className="sl-name">CHAUSSON</span>
+        <span className="sl-sub">Matériaux</span>
+      </div>
+    );
+  }
+  return null;
+};
+
+/* Logo Google multicolore officiel */
+const GoogleLogo = ({ height = 36 }) => (
+  <svg height={height} viewBox="0 0 272 92" xmlns="http://www.w3.org/2000/svg" aria-label="Google">
+    <path fill="#EA4335" d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/>
+    <path fill="#FBBC05" d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"/>
+    <path fill="#4285F4" d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z"/>
+    <path fill="#34A853" d="M225 3v65h-9.5V3h9.5z"/>
+    <path fill="#EA4335" d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z"/>
+    <path fill="#4285F4" d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 53.89.36 34.91.36 15.93 16.32.47 35.3.47c10.5 0 17.98 4.12 23.6 9.49l-6.64 6.64c-4.03-3.78-9.49-6.72-16.97-6.72-13.86 0-24.7 11.17-24.7 25.03 0 13.86 10.84 25.03 24.7 25.03 8.99 0 14.11-3.61 17.39-6.89 2.66-2.66 4.41-6.46 5.1-11.65l-22.49.01z"/>
+  </svg>
 );
 
 /* — Scroll animation — */
@@ -344,14 +433,18 @@ function Hero() {
           <div className="hero-corner-tag"><span className="live"></span> CHANTIER EN COURS · NÎMES 30900</div>
           <div className="hero-floating-stats">
             <div className="stat-card">
-              <div className="num">25<small>+</small></div>
-              <div className="lbl">Ans d'expérience</div>
-              <div className="desc">Implantés dans le Gard depuis plus de 25 ans.</div>
+              <div className="stat-icon"><IconCalendar size={40} /></div>
+              <div className="stat-text">
+                <div className="num">25<small>+ ans</small></div>
+                <div className="lbl">Implantés dans le Gard</div>
+              </div>
             </div>
             <div className="stat-card">
-              <div className="num">10<small>ans</small></div>
-              <div className="lbl">Garantie Décennale</div>
-              <div className="desc">Tous travaux couverts · n° 33956967</div>
+              <div className="stat-icon"><IconMedal size={40} /></div>
+              <div className="stat-text">
+                <div className="num">10<small>ans</small></div>
+                <div className="lbl">Garantie décennale · n° 33956967</div>
+              </div>
             </div>
           </div>
         </div>
@@ -359,9 +452,9 @@ function Hero() {
 
       <div className="container">
         <div className="hero-stats-strip">
-          <div>
-            <div className="num"><em>4,6</em>/5</div>
-            <div className="lbl"><IconStar /> Google</div>
+          <div className="hero-stat-google">
+            <div className="hero-google-logo"><GoogleLogo height={28} /></div>
+            <div className="hero-google-stars"><Stars count={5} size={16} color="#FBBC05" /></div>
             <div className="sub">15 avis clients vérifiés</div>
           </div>
           <div>
@@ -375,7 +468,7 @@ function Hero() {
             <div className="sub">Astreinte fuite & tempête</div>
           </div>
           <div>
-            <div className="num">50 <em>km</em></div>
+            <div className="num">50<em>km</em></div>
             <div className="lbl">Zone d'intervention</div>
             <div className="sub">Nîmes · Gard · Hérault</div>
           </div>
@@ -439,19 +532,19 @@ function GarantiesSection() {
 
         <div className="garanties-grid">
           <article className="garantie-card accent">
-            <div className="badge-icon">10</div>
+            <div className="garantie-icon"><IconMedal size={64} /></div>
             <h4>Garantie décennale</h4>
-            <p>Couverture 10 ans sur tous les travaux de structure et d'étanchéité — vous êtes protégé.</p>
+            <p>Couverture 10 ans sur tous les travaux de structure et d'étanchéité — vous êtes protégé durablement.</p>
             <div className="ref">N° 33956967 · TOUS TRAVAUX</div>
           </article>
           <article className="garantie-card">
-            <div className="badge-icon blu">DTU</div>
+            <div className="garantie-icon"><IconShieldCheck size={64} /></div>
             <h4>Travaux conformes DTU</h4>
-            <p>Toutes nos interventions respectent les Documents Techniques Unifiés — norme professionnelle obligatoire qui garantit la durabilité de votre toit.</p>
+            <p>Toutes nos interventions respectent les Documents Techniques Unifiés — la norme professionnelle qui garantit la durabilité de votre toit.</p>
             <div className="ref">RÈGLES DE L'ART · NF</div>
           </article>
           <article className="garantie-card">
-            <div className="badge-icon">24h</div>
+            <div className="garantie-icon"><IconClock247 size={64} /></div>
             <h4>Astreinte urgence 24/7</h4>
             <p>Fuite, dégât tempête, tuile arrachée — nous intervenons pour sécuriser votre bien rapidement, 7 jours sur 7.</p>
             <div className="ref">NÎMES & GARD · 50 KM</div>
@@ -477,22 +570,24 @@ function MateriauxSection() {
           </div>
         </div>
 
+        <div className="materiaux-intro">
+          <span className="eyebrow">▤ Sélection</span>
+          <h3 className="materiaux-intro-title">
+            Tuiles, ardoise, zinc, aluminium, gouttières, isolants — sélectionnés chez nos partenaires de référence.
+          </h3>
+        </div>
+
         <div className="materiaux-grid">
-          <div className="intro" style={{background: "var(--creme-deep)", borderRadius: "var(--r-xl)"}}>
-            <span className="eyebrow">▤ Sélection</span>
-            <h3 className="serif-it" style={{fontSize: 32, lineHeight: 1.05}}>
-              Tuiles, ardoise, zinc, aluminium, gouttières, isolants.
-            </h3>
-            <p style={{fontSize: 13.5, color: "var(--ink-mid)", lineHeight: 1.6}}>
-              Chaque matériau est sélectionné pour sa performance, sa longévité et son esthétique — en accord avec les spécificités architecturales de votre bien.
-            </p>
-          </div>
           {FOURNISSEURS.map(f => (
-            <article key={f.name} className="fournisseur">
-              <div className="logo-box">{f.mark}</div>
-              <h5>{f.name}</h5>
-              <p>{f.desc}</p>
-              <span className="tag">▸ {f.tag}</span>
+            <article key={f.id} className={`fournisseur fournisseur-${f.id}`}>
+              <div className="logo-box">
+                <SupplierLogo id={f.id} />
+              </div>
+              <div className="fournisseur-body">
+                <h5>{f.name}</h5>
+                <p>{f.desc}</p>
+                <span className="tag">▸ {f.tag}</span>
+              </div>
             </article>
           ))}
         </div>
@@ -628,14 +723,21 @@ function AvisSection() {
         </div>
 
         <div className="avis-summary">
-          <div className="num-big"><em>4,6</em>/5</div>
-          <div className="meta-stats">
-            <div className="stars-big"><Stars count={5} size={22} /></div>
-            <strong>15 avis vérifiés</strong>
-            <span>NÎMES · MARSEILLAN · GARD</span>
+          <div className="avis-summary-left">
+            <strong className="avis-count">15 Avis</strong>
+            <Stars count={5} size={26} color="#FBBC05" />
+            <a
+              href="https://www.google.com/maps/search/Pro+G+Rénovation+Nîmes"
+              target="_blank"
+              rel="noopener"
+              className="avis-link"
+            >
+              Consultez les avis →
+            </a>
           </div>
-          <div className="google-badge">
-            <span className="g-dot"></span> AVIS GOOGLE
+          <div className="avis-summary-right">
+            <GoogleLogo height={44} />
+            <Stars count={5} size={20} color="#FBBC05" />
           </div>
         </div>
 
